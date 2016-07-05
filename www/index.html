@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+    <script src="lib/jquery-1.10.2.min.js"></script>
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/ionic-datepicker.styles.css" rel="stylesheet">
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.min.js"></script>
+    <script src="lib/socket.io.js"></script>
+    <script src="lib/ionic-datepicker.bundle.min.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <!-- Cordova is bootstrapped by ionic-platform-web-client, uncomment this if you remove ionic-platform-web-client... -->
+
+    <!-- your app's js -->
+    <script src="lib/scrollglue.js"></script>
+    <script src="js/app.js"></script>
+
+    <script src="lib/ionic-datepicker.provider.js"></script>
+    <script src="lib/ionic-datepicker.service.js"></script>
+    <script src="js/controllers.js"></script>
+  <!--  <script src="lib/ng-cordova.min.js"></script>
+    <script src="cordova.js"></script>  -->
+  </head>
+  <body ng-app="app" ng-controller="mainController">
+    <div class="divNenDen" id="divNenDen"></div>
+
+    <div id="divNenDen2" ng-click="animateNenDen()" style="position:fixed;width:100%;height:100%;display:none;background-color:rgba(0,0,0,0.5);z-index:105;">
+      <div class="sidemenu">
+        <div style="position:relative; width:100%;">
+
+          <div style="position:relative;background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4DB6AC), color-stop(100, #00796B));z-index:100;">
+            <div ng-click="animateNenDen()" class="header cyan shadow" style="margin-top:0px;height:60px;border-bottom:0px;font-size:18px;line-height:46px;padding-left:10px;padding-top:0px;display:inline-block;">
+              <h1 style="color:#E0F2F1;font-weight:400;font-size:17px;display:inline-block;margin-top:13px;position:absolute;width:100%;text-align:center;line-height:45px;">Manage Account</h1>
+              <i class="ion ion-chevron-left" style="margin-right:6px;color:white;font-size:14px;">
+
+              </i>
+              <span style="font-size:16px;margin-left:-2px;color:white;">Hide</span>
+
+
+            </div>
+
+          </div>
+
+          <div class="border-bottom" style="height:48px;overflow:hidden;background-color:white;position:fixed;z-index:99;margin-top:52px;width:100%;">
+            <div style="float:left;background-color:white;display:inline-block;line-height:48px;height:48px;width:100%;position:relative;">
+
+                <a style="font-size:14px;font-weight:500;height:48px;width:33%;float:left;display:inline-block;text-align:center;underline:none;" class="tab2 tab_hover" ng-click="showUserInfoDiv()">
+                  <i class="ion ion-person pink_color" style="font-size:16px;height:48px;"></i>
+
+                  <span class="pink_color">User Info</span>
+
+                </a>
+                <a style="font-size:14px;font-weight:500;height:48px;width:34%;float:left;display:inline-block;text-align:center;underline:none;" class="tab2" ng-click="showMyBillsDiv()">
+                  <i class="ion ion-document-text" style="font-size:16px;height:48px;"></i>
+
+                  <span>Old Records</span>
+
+                </a>
+                <a style="font-size:14px;font-weight:500;height:48px;width:33%;float:left;display:inline-block;text-align:center;underline:none;" class="tab2" ng-click="showSettingsDiv()">
+                  <i class="ion ion-gear-b" style="font-size:16px;height:48px;"></i>
+
+                  <span>My Settings</span>
+
+                </a>
+
+            </div>
+
+          </div>
+          <div style="padding-top:100px;" id="div_userInfo" class="tab_content">
+
+            <label class="item item-input" style="border-top:0px;">
+              <span class="input-label">Username:</span>
+              <input type="text" ng-model="user.name" placeholder="your username..." disabled>
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Bill number:</span>
+              <input type="text" ng-model="user.WWID" placeholder="your password..." disabled>
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Email:</span>
+              <input type="email" ng-model="user.email" placeholder="your email..." disabled>
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Phone:</span>
+              <input type="text" ng-model="user.phone" placeholder="your phone..." disabled>
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Address:</span>
+              <input type="text" ng-model="user.address" placeholder="your address..." disabled>
+            </label>
+
+          </div>
+          <div style="padding-top:100px;" id="div_myBillings" class="tab_content">
+            <label style="margin-top:10px;margin-left:12px;display:inline-block;width:100%;" ng-show="areThereAnyOldOder()">You have not made any order yet.</label>
+            <label class="item item-input" ng-repeat="bill in oldBills">
+              <span class="input-label">Bill ID: {{bill.WWID}}, By: {{bill.customerName}}. <br>
+                {{bill.status}}
+              </span>
+              <span style="position:absolute;right:2px;top:12px;font-size:14px;">
+                {{bill.time}}
+              </span>
+            </label>
+          </div>
+
+          <div style="padding-top:100px;" id="div_settings" class="tab_content">
+            <ul class="list">
+
+              <li class="item item-toggle" style="border-top:0px;">
+                Auto Login
+                <label class="toggle toggle-balanced" style="border-top:0px;">
+                  <input type="checkbox" checked>
+                  <div class="track">
+                    <div class="handle"></div>
+                  </div>
+                </label>
+              </li>
+              <li class="item item-toggle">
+                Confirm password before ordering
+                <label class="toggle toggle-royal">
+                  <input type="checkbox" checked>
+                  <div class="track">
+                    <div class="handle"></div>
+                  </div>
+                </label>
+              </li>
+              <li class="item item-toggle">
+                Enable Notification
+                <label class="toggle toggle-assertive">
+                  <input type="checkbox" checked>
+                  <div class="track">
+                    <div class="handle"></div>
+                  </div>
+                </label>
+              </li>
+
+            </ul>
+            <div style="margin-top:20px;">
+              <button class="button button-outline button-assertive" style="width:45%;margin-left:4%;float:left;" disabled>
+                Save changes
+              </button>
+              <button class="button button-assertive" style="width:45%;margin-left:2%;float:right;margin-right:4%;" ng-click="performLogOut()">
+                Log out
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  <!-- Chat-->
+    <div id="divNenDen3" ng-click="animateNenDen()" style="position:fixed;width:100%;height:100%;display:none;background-color:rgba(0,0,0,0.5);z-index:105;">
+      <div class="sidemenu" style="width:100%">
+        <div style="position:relative;width:100%;">
+          <div style="position:fixed;background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4DB6AC), color-stop(100, #00796B));z-index:100;">
+            <div class="header cyan shadow" style="position:fixed;margin-top:0px;height:60px;border-bottom:0px;font-size:18px;line-height:46px;padding-left:10px;padding-top:0px;display:inline-block;" ng-click="hideChatInterface()">
+              <h1 style="color:#E0F2F1;font-weight:400;font-size:17px;display:inline-block;margin-top:13px;position:absolute;width:100%;text-align:center;line-height:45px;">Real Time Messages {{test}}</h1>
+              <i class="ion ion-chevron-right" style="margin-right:6px;color:white;font-size:14px;"></i>
+              <span style="font-size:16px;margin-left:-2px;color:white;">Hide</span>
+            </div>
+          </div>
+
+
+          <div id="chatbody" style="position:fixed;margin-top:50px;padding-left:10px;padding-right:10px;overflow:scroll;" scroll-glue="">
+            <div class="message_wrapper" ng-repeat="message in messages">
+              <label ng-attr-class="{{message.type &amp;&amp; &apos;message_content&apos; || &apos;message_content2&apos; }}">{{message.content}}</label>
+              <label ng-attr-class="{{message.type &amp;&amp; &apos;message_authorName&apos; || &apos;message_authorName2&apos; }}">{{message.time}}</label>
+            </div>
+            <label style="opacity:0;" id="lbScrollTo">...</label>
+          </div>
+          <div style="position:fixed;width:100%;height:50px;background-color:white;z-index:105;display:inline-block;" id="divChuaTbChat" class="shadow">
+            <form ng-submit="pushThisMessage()">
+              <input id="messageTextBox" type="text" ng-model="tb_newMessage" style="border-top:1px solid #E0E0E0;padding-left:10px;padding-right:10px;height:50px;line-height:50px;float:left;width:70%;" placeholder="Your message here ...">
+              <button type="submit" class="button button-assertive" style="border-radius:0px;padding-left:20px;padding-right:20px;background-color:#E91E63;width:30%;float:right;">
+                <i class="ion ion-paper-airplane" style="margin-right:6px;color:white;"></i>
+                Send
+              </button>
+            </form>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <!-- End of Chat-->
+    <!-- Pasword-->
+    <div class="modal_popup_password" id="popup_passwordConfirm" style="background-color:white;">
+      <table style="width:100%;">
+        <tr><input placeholder="{{passStatus}}" style="width:100%;background-color:#EEEEEE;text-align:center;border-radius:4px;height:40px;line-height:40px" type="password" ng-model="passConfirm">
+
+        </tr>
+        <tr style="width:100%;border-bottom: 1px solid #BDBDBD;height:60px;">
+
+          <td style="margin-left:18%;height:50px;display:inline-block;"><button class="button button-block button-stable" ng-click="cancel_popup_password()" style="position:relative;bottom:4px;width:100px;">
+          Cancel
+          </button></td>
+          <td style="margin-left:10px;height:50px;display:inline-block;"><button class="button button-block button-stable" style="position:relative;bottom:4px;width:100px;" ng-click="confirmCode()">
+            Confirm
+          </button></td>
+
+        </tr>
+      </table></div>
+    <!-- End of Pasword-->
+    <!-- Popup -->
+    <div class="modal_popup_small" id="popup_selectFood">
+      <div>
+        <h3 class="cyan_text">{{selectedFoodObj.name}}</h3>
+      </div>
+      <div>
+        <table style="width:100%;">
+          <thead>
+            <tr style="width:100%;border-bottom: 1px solid #BDBDBD;">
+              <td style="width:30%;height:30px;line-height:30px;display:inline-block;font-weight:bold;">Price</td>
+              <td style="width:30%;height:30px;line-height:30px;display:inline-block;font-weight:bold;">Quantity</td>
+              <td style="width:40%;height:30px;line-height:30px;display:inline-block;font-weight:bold;">Action</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width:30%;height:30px;line-height:30%;display:inline-block;"><b class="pink_color" style="font-size:20px;">{{selectedFoodObj.price_C | currency:&quot;$&quot;:0  }}</b></td>
+              <td style="width:30%;height:30px;line-height:30%;display:inline-block;padding-right:10px;"><input type="text" ng-model="selectedFoodObj.quantity" style="width:100%;height:30px;line-height:30px;border:1px solid #BDBDBD;padding-left:5px;padding-right:5px;border-radius:4px;"></td>
+              <td style="width:40%;height:30px;line-height:30%;display:inline-block;font-weight:bold;">
+                <button class="btn_raised pink_color shadow" style="margin-top:5px;" ng-click="decrease(selectedFoodObj)">
+                  <i class="ion ion-minus-round"></i>
+                </button>
+                <button class="btn_raised pink_color shadow" style="margin-top:5px;margin-left:6px;" ng-click="increase(selectedFoodObj)">
+                  <i class="ion ion-plus-round"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="width:40%;float:left;margin: auto;margin-top:10px;height:50px;;">
+        <button class="btn_raised pink_color shadow" style="margin-top:5px;margin-left:6px" ng-click="changeToSizeLarge(selectedFoodObj)">
+          <i>L</i>
+        </button>
+        <button class="btn_raised pink_color shadow" style="margin-top:5px;margin-left:6px" ng-click="changeToSizeMed(selectedFoodObj)">
+          <i>M</i>
+        </button>
+
+      </div>
+
+      <div style="width:60%;float:left;">
+        <button class="button button-block button-positive" ng-click="addThisFoodToShoppingCart()">
+          <i class="ion ion-android-cart" style="color: white;margin-right:5px;font-size:20px;"></i>
+          Add To Cart
+        </button>
+      </div>
+    </div>
+    <!-- End of Popup -->
+    <label class="popup_notification" ng-click="hideNotification()" style="overflow:hidden;">{{notificationText}}
+      <i class="ion ion-close-round" style="font-size:16px;color:white;margin-left:4px;" aria-hidden="true"></i>
+    </label>
+    <div class="firstPage">
+      <img class="wallPaper" src="img/wall.png" style="position:absolute;left:-60%;bottom:0px;height:100%;z-index:106;">
+      <img class="wallPaper2" src="img/wall.png" style="position:absolute;left:30%;bottom:0px;height:100%;z-index:105;">
+      <img class="wallPaper2" src="img/wall.png" style="position:absolute;left:80%;bottom:0px;height:100%;z-index:104;">
+      <img src="img/logo.jpg" style="position:absolute;left:38%;top:37%;width:24%;z-index:107;">
+      <div style="position:absolute;width:80%;left:10%;top:55%;z-index:108;">
+
+        <h2 style="width:100%;display:inline-block;text-align:center;">VNAT CS Cafe App</h2>
+        <form ng-submit="performLogin()">
+          <label id="lb_loginFailed" style="color:#E91E63;font-size: 14px;display:none;">Login failed! Please check again.</label>
+          <label class="item item-input" style="border-radius:4px;margin-bottom:10px;">
+            <span class="input-label">Email:</span>
+            <input type="email" ng-model="loginObj.email">
+          </label>
+          <label class="item item-input" style="border-radius:4px;margin-bottom:10px;">
+            <span class="input-label">Password:</span>
+            <input type="password" ng-model="loginObj.password">
+          </label>
+          <button class="button button-full button-royal" type="submit" style="border-radius:4px;">
+            Login
+          </button>
+        </form>
+
+      </div>
+    </div>
+    <ion-pane>
+        <div class="float-button shadow" ng-show="areThereAnyThingSelected()" ng-click="showTab3()">
+          <span class="height-fix">
+            <a class="content">
+              {{howManyItemSelected()}}
+            </a>
+          </span>
+        </div>
+
+    <!-- Top bar -->
+
+     <ion-header-bar class="cyan shadow" style="z-index:1;height:60px">
+             <h1 style="color:#E0F2F1;font-weight:400;font-size:20px;display:inline-block;margin-top:8px;width:100%;position:fixed;text-align:center;line-height:45px;" ng-click="openDatePicker()">{{selectedDate}}</h1>
+            <button class="button button-icon ion-navicon cyan-text" ng-click="toggleLeftSideMenu()"></button>
+
+             <button class="button button-icon ion-ios-chatboxes-outline cyan-text" ng-click="openChatInterface()" style="float:right;"></button>
+   </ion-header-bar>
+
+    <!-- Top bar -->
+
+    <!-- Menu -->
+    <!-- Food -->
+        <div class="menu bg" id="foodMenu" style="width:100%;position:relative;height:100%;">
+            <ion-content class="bg" style="margin-top:0px;">
+              <div class="app_col_2a" style="margin-top:0px;">
+                        <div class="app_card2" ng-repeat="drink in todayFoods" style="width:100%;height:96px;">
+                          <div class="menuArangeLeft" style="width:40%;padding:5px;">
+                            <img src="{{drink.image}}" style="width: 100%; height: 90px;" class="shadow">
+                          </div>
+                          <div class="menuArangeLeft" style="width:60%; padding-left: 5px;">
+                            <label class="menuTitle" style="color:black;width:100%;height:40px;padding-top:5px;">{{$index + 1}}. {{drink.name}}</label>
+                          <div class="menuArangeLeft" style="margin-top:20px;">
+                            <div class="menuArangeLeft" style="width:60%;height:40px;margin-top:-14px;">
+                             <label class="menuFooterTitle pink_color">{{drink.price_L | currency:&quot;&quot;:0 }} VND</label>
+                            </div>
+                            <div class="menuArangeLeft" style="width:40%;height:32px;margin-top:-10px;">
+                             <button class="menuCardActionButton" ng-click="analyzeThisFood(drink);" disabled>
+                               ORDER
+                             </button>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+              </div>
+            </ion-content>
+        </div>
+
+      <!-- Beverage -->
+
+        <div class="menu bg" id="drinkMenu" style="width:100%;position:relative;height:100%;margin-top:60px">
+          <div class="subHeader border-bottom" style="height:50px;overflow:hidden;background-color:white;position:fixed;display:inline-block;z-index:99;">
+            <div style="float:left;background-color:white;display:inline-block;line-height:48px;height:48px;width:100%;position:relative;">
+              <div style="background-color:white;width:80%;float:left;position:relative;height:48px;margin-left:10%;">
+                <a style="font-size:14px;font-weight:500;height:48px;width:50%;float:left;display:inline-block;text-align:center;underline:none;" class="tab3 tab_hover" ng-click="showHighlandDrinkDiv()">
+                  <i class="icon ion-coffee pink_color" style="font-size:18px;height:48px;"></i>
+                  <span class="pink_color">Highlands Coffee</span>
+                </a>
+                <a style="font-size:14px;font-weight:500;height:48px;width:50%;float:left;display:inline-block;text-align:center;underline:none;" class="tab3" ng-click="showMatMatDrinkDiv()">
+                  <i class="icon ion-wineglass" style="font-size:16px;height:48px;"></i>
+                  <span>Mat Mat Juice</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+          <ion-content class="bg" style="margin-top:0px;">
+          <div class="app_body bg" style="margin-top:0px;">
+            <div class="col col-100 app_col_2a" id="highlandDrinkDiv">
+
+                      <div class="app_card2" ng-repeat="drink in highlandDrinks" style="width:100%;height:96px;">
+                        <div class="menuArangeLeft" style="width:40%;padding:5px;">
+                          <img src="{{drink.image}}" style="width: 100%; height: 90px;" class="shadow">
+                        </div>
+                        <div class="menuArangeLeft" style="width:60%; padding-left: 5px;">
+                          <label class="menuTitle" style="color:black;width:100%;height:40px;padding-top:5px;">{{$index + 1}}. {{drink.name}}</label>
+                        <div class="menuArangeLeft" style="margin-top:20px;">
+                          <div class="menuArangeLeft" style="width:50%;height:40px;margin-top:-14px;">
+                           <label class="menuFooterTitle pink_color">{{drink.price_L | currency:&quot;&quot;:0 }} VND</label>
+                          </div>
+                          <div class="menuArangeLeft" style="width:50%;height:32px;margin-top:-10px;">
+                           <button class="menuCardActionButton" ng-click="analyzeThisFood(drink);">
+                             ORDER
+                           </button>
+                          </div>
+                        </div>
+                        </div>
+                      </div>
+            </div>
+
+            <div class="app_col_2a" id="matmatDrinkDiv">
+
+                      <div class="app_card2" ng-repeat="drink in matmatDrinks" style="width:100%;height:96px;">
+                        <div class="menuArangeLeft" style="width:40%;padding:5px;">
+                          <img src="{{drink.image}}" style="width: 100%; height: 90px;" class="shadow">
+                        </div>
+                        <div class="menuArangeLeft" style="width:60%; padding-left: 5px;">
+                          <label class="menuTitle" style="color:black;width:100%;height:40px;padding-top:5px;">{{$index + 1}}. {{drink.name}}</label>
+                        <div class="menuArangeLeft" style="margin-top:20px;">
+                          <div class="menuArangeLeft" style="width:50%;height:40px;margin-top:-14px;">
+                           <label class="menuFooterTitle pink_color">{{drink.price_L | currency:&quot;&quot;:0 }} VND</label>
+                          </div>
+                          <div class="menuArangeLeft" style="width:50%;height:32px;margin-top:-10px;">
+                           <button class="menuCardActionButton" ng-click="analyzeThisFood(drink);">
+                             ORDER
+                           </button>
+                          </div>
+                        </div>
+                        </div>
+                      </div>
+            </div>
+
+
+          </div>
+          </ion-content>
+        </div>
+
+        <!-- Finish Menu -->
+
+        <!-- Bill -->
+
+        <div class="menu bg" id="cartMenu" style="width:100%;overflow:scroll;height:100%;position:relative;">
+          <div class="subHeader border-bottom" style="height:48px;overflow:hidden;background-color:white;position:fixed;display:inline-block;z-index:99;">
+            <div class="header_block" style="float:left;background-color:white;display:inline-block;line-height:48px;height:48px;">
+              TOTAL COST: <span style="color:#E91E63;font-size:20px;">{{calculateToTalCost() | currency:&quot;&quot;:0 }} VND</span>
+            </div>
+            <button class="card_action_btn" style="float:right;margin:0px;height:48px;line-height:48px;border:0px;border-radius:0xp;color:black;font-weight:400;" ng-click="createBlankBill()">
+              <i class="ion ion-trash-b" style="margin-right:4px;font-size:16px;"></i>
+              New Bill
+            </button>
+          </div>
+          <div class="app_body bg" style="padding-bottom:100px;padding-top:60px;" id="body_to_scroll">
+            <div style="padding-right:12px;padding-left:12px;margin-bottom:20px;">
+              <h3 style="margin-left:54px;margin-top:30px;">
+                <i class="ion ion-android-clipboard" style="margin-right:10px;"></i>
+                BILL INFORMATION
+              </h3>
+              <table style="width:100%;display:inline-block;">
+                <tbody>
+                  <tr style="width:100%;display:inline-block;">
+                    <td style="text-align:right;display:inline-block;width:100px;"><h5>Customer:</h5></td>
+                    <td style="text-align:left;display:inline-block;padding-left:12px;width:60%;">{{user.name}}</td>
+                  </tr>
+                  <tr style="margin-top:-20px;display:inline-block;width:100%;">
+                    <td style="text-align:right;display:inline-block;width:100px;"><h5>Bill number:</h5></td>
+                    <td style="text-align:left;display:inline-block;padding-left:12px;width:60%;">{{user.WWID}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <table style="width:100%;display:inline-block;" ng-show="areThereAnyThingSelected()">
+                <thead style="width:100%;display:inline-block;">
+                    <tr style="width:100%;border-bottom:1px solid #E0E0E0;display:inline-block;">
+                      <td style="width:6%;" class="final_class"><b>#</b></td>
+                      <td style="width:38%;" class="final_class"><b>Name</b></td>
+                      <td style="width:12%;" class="final_class"><b>Price</b></td>
+                      <td style="width:12%;" class="final_class"><b>Num</b></td>
+                      <td style="width:12%;" class="final_class"><b>Money</b></td>
+                      <td style="width:13%;" class="final_class"></td>
+                    </tr>
+                </thead>
+                <tbody style="width:100%;display:inline-block;">
+                  <tr style="width:100%;border-bottom:1px solid #E0E0E0;display:inline-block;" ng-repeat="food in shoppingCart.foods track by $index">
+                    <td style="width:6%;" class="final_class"><b>{{$index + 1}}</b></td>
+                    <td style="width:38%;" class="final_class">{{food.name}}</td>
+                    <td style="width:12%;" class="final_class">{{food.price_C | currency:&quot;&quot;:0}}</td>
+                    <td style="width:12%;" class="final_class">{{food.quantity}}</td>
+                    <td style="width:12%;" class="final_class">{{getPartialMoney(food.price_C, food.quantity) | currency:&quot;&quot;:0}}</td>
+                    <td style="width:13%;" class="final_class">
+                      <button class="btn_raised pink_color shadow" style="float:right;margin-top:2px;display:inline-block;width:30px;height:30px;line-height:30px;" ng-click="removeThisFoodFromShopingCart($index)">
+                        <i class="ion ion-minus-round"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr style="width:100%;border-bottom:1px solid #E0E0E0;display:inline-block;" ng-repeat="drink in shoppingCart.drinks track by $index">
+                    <td style="width:6%;" class="final_class"><b>{{$index + 1}}</b></td>
+                    <td style="width:38%;" class="final_class">{{drink.name}}</td>
+                    <td style="width:12%;" class="final_class">{{drink.price_C | currency:&quot;&quot;:0}}</td>
+                    <td style="width:12%;" class="final_class">{{drink.quantity}}</td>
+                    <td style="width:12%;" class="final_class">{{getPartialMoney(drink.price_C, drink.quantity) | currency:&quot;&quot;:0}}</td>
+                    <td style="width:13%;" class="final_class">
+                      <button class="btn_raised pink_color shadow" style="float:right;margin-top:2px;display:inline-block;width:30px;height:30px;line-height:30px;" ng-click="removeThisDrinkFromShopingCart($index)">
+                        <i class="ion ion-minus-round"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <button ng-show="areThereAnyThingSelected()" style="margin-top:10px;display:inline-block;" class="button button-block button-assertive" ng-click="popup_password()">
+                <i class="ion ion-android-send" style="margin-right:6px;color:white;"></i>
+                SEND ORDER
+              </button>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs-striped tabs-color-assertive shadow">
+          <div class="tabs">
+            <a class="tab-item active tab1" ng-click="showTab1()">
+              <i class="icon ion-android-restaurant pink_color"></i>
+            </a>
+            <a class="tab-item tab1" ng-click="showTab2()">
+              <i class="icon ion-android-bar"></i>
+            </a>
+            <a class="tab-item tab1" ng-click="showTab3()">
+              <i class="icon ion-android-cart"></i>
+            </a>
+
+          </div>
+        </div>
+    </ion-pane>
+  </body>
+</html>

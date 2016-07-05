@@ -1,0 +1,375 @@
+.float-button {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  width: 14px;
+  padding: 14px;
+  font-size: 14px;
+  background: #E91E63;
+  position: fixed;
+  bottom: 18px; /* Adjust to where you want it */
+  right: 12px; /* Adjust to where you want it */
+  z-index: 98;
+  color: white;
+  cursor: pointer;
+}
+
+.float-button .height_fix {
+  margin-top: 100%;
+}
+
+.float-button .content {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  margin-top: -10px; /* Note, this must be half the font size */
+  color: white;
+}
+
+.shadow {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.bg {
+  min-height: 100%;
+  background-color: rgb(228,233,240);
+}
+
+.cyan {
+  background-color: #004D40;
+  color: #E0F2F1;
+}
+
+.cyan-text {
+  color: #E0F2F1;
+}
+
+.app_col_2a{
+  display: inline-block;
+  float: left;
+  padding: 0px 2px 6px 4px;
+  padding-bottom: 100px;
+}
+.app_col_2b{
+  display: inline-block;
+  float: left;
+  padding: 0px 4px 6px 2px;
+  padding-bottom: 100px;
+}
+.app_card{
+  display: inline-block;
+  float: left;
+  width: 100%;
+  min-height: 102px;
+  border-radius: 4px;
+  background-color: white;
+  margin-top: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.app_card2{
+  display: inline-block;
+  float: left;
+  width: 100%;
+  min-height: 102px;
+  border-radius: 4px;
+  background-color: white;
+  margin-top: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.app_card img{
+  width: 100%;
+  height: 100px;
+  display: inline-block;
+  float: left;
+  border-radius: 4px;
+}
+.app_card2 img{
+  width: 100%;
+  height: 100px;
+  display: inline-block;
+  float: left;
+  border-radius: 4px;
+}
+.app_card div{
+  width: 100%;
+  display: inline-block;
+  float: left;
+  padding: 4px;
+}
+.app_card2 div{
+  width: 100%;
+  display: inline-block;
+  float: left;
+  padding: 4px;
+}
+.tab_hover {
+  color: #E91E63;
+  border-bottom: 3px solid #E91E63;
+}
+.card_title{
+  font-size: 15px;
+  line-height: 20px;
+  width: 100%;
+  display: inline-block;
+  float: left;
+  font-weight: bold;
+}
+.card_footer_title{
+  line-height:50px;
+  height:50px;
+  float:left;
+  display:inline-block;
+  font-size: 16px;
+  font-weight: bold;
+}
+.card_action_btn{
+  border: none;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: lighter;
+  text-align: center;
+  display: inline-block;
+  float: left;
+  padding-left: 3px;
+  padding-right: 3px;
+  transition: background-color 0.4s;
+  background-color: white;
+  border-radius: 4px;
+}
+.table_header td{
+  font-weight: bold;
+  display: inline-block;
+  overflow: hidden;
+}
+.overFlow3Cham{
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.pink_color {
+  color: #E91E63;
+}
+.divNenDen {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 100;
+  background-color: rgba(0,0,0,0.5);
+  display: none;
+}
+.modal_popup_small {
+  width: 94%;
+  min-height: 200px;
+  position: fixed;
+  background-color: white;
+  display: none;
+  margin-left: 3%;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 4px;
+  padding: 12px;
+  z-index: 100;
+}
+.modal_popup_small div {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  float: left;
+}
+.cyan_text {
+  color: #004D40;
+}
+.btn_raised {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  float: left;
+  border-radius: 50%;
+  line-height: 40px;
+  font-size: 14px;
+  text-align: center;
+  color: white;
+  background-color: #E91E63;
+  border: 0px;
+}
+.btn_raised i {
+  color: white;
+}
+.table_bill_header td {
+  text-align: :left;
+}
+.final_class {
+  display:inline-block;
+  height:34px;
+  line-height:34px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+}
+.sidemenu {
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+  display: inline-block;;
+  float: left;
+  background-color: white;
+}
+.timelinebg {
+  width: 100%;
+  display: inline-block;
+  float: left;
+}
+.appLogo {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  position: fixed;
+  left: 15px;
+}
+.message_wrapper {
+  width: 100%;
+  display: inline-block;
+  float:left;
+  margin-top: 10px;
+  margin-bottom: -6px;
+}
+.pink_bg {
+  background-color: #E91E63;
+}
+.message_authorName {
+  width:100%;
+  font-size: 12px;
+  line-height: 12px;
+  display: inline-block;
+  float:left;
+  margin-top: 4px;
+  padding-left: 6px;
+}
+.message_authorName2 {
+  width:100%;
+  font-size: 12px;
+  line-height: 12px;
+  display: inline-block;
+  float:right;
+  margin-top: 4px;
+  padding-right: 6px;
+  text-align: right;
+}
+.message_content {
+  padding:10px 14px 11px 14px;
+  font-size: 15px;
+  line-height: 18px;
+  display: inline-block;
+  float:left;
+  border-radius:6px;
+  background-color: #B3E5FC;
+  color: black;
+  width:80%;
+}
+.message_content2 {
+  padding:10px 14px 11px 14px;
+  font-size: 15px;
+  line-height: 18px;
+  display: inline-block;
+  float:right;
+  border-radius:6px;
+  background-color: #E1F5FE;
+  color: black;
+  width:80%;
+}
+.table_menu{
+  vertical-align: middle;
+}
+.menuArangeLeft{
+  display: inline-block;
+  float:left;
+}
+.menuArangeRight{
+  display: inline-block;
+  float:left;
+}
+.menuTitle{
+  font-size: 18px;
+  line-height: 22px;
+  display: inline-block;
+  float: left;
+  font-weight: 500;
+}
+
+.menuFooterTitle{
+  line-height:30px;
+  height:30px;
+  float:left;
+  display:inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  width:160px;
+}
+.menuCardActionButton{
+  border: none;
+  height: 32px;
+  margin-top: -6px;
+  font-size: 13px;
+  text-align: center;
+  display: inline-block;
+  float: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  transition: background-color 0.4s;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+
+}
+.passConfirmButtonAction{
+  border:none;
+  height:30px;
+  font-size:15px;
+  text-align:center;
+  border-radius: :4px;
+  background-color: white;
+}
+.modal_popup_password{
+  width: 94%;
+  min-height: 120px;
+  position: fixed;
+  background-color: white;
+  display: none;
+  margin-left: 3%;
+  border-radius: 4px;
+  padding: 12px;
+  z-index: 100;
+}
+.popup_notification {
+  height:50px;
+  line-height: 50px;
+  display: inline-block;
+  position: fixed;
+  z-index: 1000;
+  padding: 0px 20px 0px 20px;
+  border-radius: 50px;
+  text-align: center;
+  top: 16px;
+  right: 16px;
+  background-color: #E91E63;
+  color: white;
+  font-size: 16px;
+  display: none;
+}
+.firstPage {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1000000000;
+}
